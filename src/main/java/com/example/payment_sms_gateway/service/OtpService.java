@@ -1,11 +1,10 @@
 package com.example.payment_sms_gateway.service;
 
-
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class OtpService {
@@ -17,15 +16,12 @@ public class OtpService {
     }
 
     public String generateOtp(String transactionId) {
-        String otp = String.format("%06d", new Random().nextInt(999999));
-
-
+        String otp = String.format("%06d", UUID.randomUUID().hashCode() % 1000000);
         redisTemplate.opsForValue().set(
                 "otp:" + transactionId,
                 otp,
-                Duration.ofMinutes(5)
+                Duration.ofMinutes(5) // OTP expires in 5 minutes
         );
-
         return otp;
     }
 

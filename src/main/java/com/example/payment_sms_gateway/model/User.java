@@ -2,7 +2,6 @@ package com.example.payment_sms_gateway.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.redis.core.RedisHash;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,7 +11,7 @@ import java.util.UUID;
 
 @Data
 @Entity
-@RedisHash("users")
+@Table(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -32,7 +31,6 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(role);
     }
-    
 
     public enum Role implements GrantedAuthority {
         ROLE_USER, ROLE_ADMIN;

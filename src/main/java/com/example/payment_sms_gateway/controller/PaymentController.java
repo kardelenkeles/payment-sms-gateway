@@ -1,20 +1,14 @@
 package com.example.payment_sms_gateway.controller;
 
-import com.example.payment_sms_gateway.dto.OtpValidationRequest;
 import com.example.payment_sms_gateway.dto.PaymentRequest;
 import com.example.payment_sms_gateway.dto.PaymentResponse;
 import com.example.payment_sms_gateway.service.PaymentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/payments")
@@ -27,34 +21,13 @@ public class PaymentController {
     public ResponseEntity<PaymentResponse> processPayment(
             @RequestBody PaymentRequest request,
             @AuthenticationPrincipal UserDetails userDetails) {
-
-        return ResponseEntity.ok(
-                paymentService.processPayment(request, userDetails.getUsername())
-        );
+        return ResponseEntity.ok(paymentService.processPayment(request, userDetails.getUsername()));
     }
 
-    @PostMapping("/validate")
-    public ResponseEntity<?> validateOtp(
-            @RequestBody OtpValidationRequest request,
+    @GetMapping("/{transactionId}")
+    public ResponseEntity<PaymentResponse> getPaymentStatus(
+            @PathVariable String transactionId,
             @AuthenticationPrincipal UserDetails userDetails) {
-
-        boolean isValid = paymentService.validateOtp(
-                request.getTransactionId(),
-                request.getOtp()
-        );
-
-        if (isValid) {
-            return ResponseEntity.ok(Map.of(
-                    "status", "SUCCESS",
-                    "message", "OTP validated successfully"
-            ));
-        }
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
-                "status", "FAILED",
-                "message", "Invalid OTP"
-        ));
+        return ResponseEntity.ok(paymentService.getPaymentStatus(transactionId, userDetails.getUsername()));
     }
-
-
 }

@@ -3,14 +3,14 @@ package com.example.payment_sms_gateway.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.redis.core.RedisHash;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
 @Data
-@RedisHash("PaymentTransaction")
+@Entity
+@Table(name = "payment_transactions")
 public class PaymentTransaction {
 
     @Id

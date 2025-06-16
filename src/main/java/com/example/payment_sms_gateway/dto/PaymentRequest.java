@@ -1,13 +1,20 @@
 package com.example.payment_sms_gateway.dto;
 
-import lombok.Getter;
+import jakarta.validation.constraints.*;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
-@Getter
+@Data
 public class PaymentRequest {
+    @NotNull
+    @Positive
     private BigDecimal amount;
-    private String currency;
-    private String description;
 
+    @NotBlank
+    @Size(min = 3, max = 3)
+    private String currency;
+
+    @NotBlank
+    private String description;
 }
