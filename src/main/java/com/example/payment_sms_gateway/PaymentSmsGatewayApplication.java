@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.context.annotation.ComponentScan;
 
 @ComponentScan("com.example.payment_sms_gateway.repository.jpa")
+@EntityScan("com.example.payment_sms_gateway.model")
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class PaymentSmsGatewayApplication {
 

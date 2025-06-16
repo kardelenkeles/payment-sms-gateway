@@ -20,7 +20,7 @@ public class OtpService {
         redisTemplate.opsForValue().set(
                 "otp:" + transactionId,
                 otp,
-                Duration.ofMinutes(5) // OTP expires in 5 minutes
+                Duration.ofMinutes(5)
         );
         return otp;
     }
